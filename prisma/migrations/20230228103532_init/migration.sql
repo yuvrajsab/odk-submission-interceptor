@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE "queue" (
+CREATE TABLE "request_queue" (
     "id" SERIAL NOT NULL,
     "data" JSONB NOT NULL,
     "form_id" TEXT NOT NULL,
@@ -8,11 +8,11 @@ CREATE TABLE "queue" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "queue_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "request_queue_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
-CREATE INDEX "queue_form_id_idx" ON "queue"("form_id");
+CREATE INDEX "request_queue_form_id_idx" ON "request_queue"("form_id");
 
 -- CreateIndex
-CREATE INDEX "queue_status_idx" ON "queue"("status");
+CREATE INDEX "request_queue_status_idx" ON "request_queue"("status");
