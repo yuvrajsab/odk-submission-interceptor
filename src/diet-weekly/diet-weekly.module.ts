@@ -4,6 +4,7 @@ import { Module } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { AppService } from '../app.service';
 import { DietWeeklyProcessor } from './diet-weekly.processor';
+import { DietWeeklyService } from './diet-weekly.service';
 
 const dietWeeklyQueue = BullModule.registerQueue({
   name: 'dietWeekly',
@@ -11,7 +12,12 @@ const dietWeeklyQueue = BullModule.registerQueue({
 
 @Module({
   imports: [dietWeeklyQueue, HttpModule],
-  providers: [DietWeeklyProcessor, AppService, PrismaService],
+  providers: [
+    DietWeeklyProcessor,
+    AppService,
+    PrismaService,
+    DietWeeklyService,
+  ],
   exports: [dietWeeklyQueue],
 })
 export class DietWeeklyModule {}

@@ -36,6 +36,36 @@ export class AppService {
     });
   }
 
+  async sendPDFRequest(templateId: string, payload: Record<string, string>) {
+    return await lastValueFrom(
+      this.httpService
+        .post(
+          `${this.configService.getOrThrow(
+            'DOC_GEN_URL',
+          )}/generate/?plugin=pdf`,
+          {
+            config_id: +this.configService.getOrThrow('DOC_GEN_CONFIG_ID'),
+            data: payload,
+            template_id: +templateId,
+          },
+        )
+        .pipe(
+          map((response: Record<string, any>) => {
+            if ('error' in response.data) {
+              this.logger.error(
+                `Doc Gen error: ${JSON.stringify(response.data)}`,
+              );
+            } else {
+              this.logger.debug(
+                `Doc Gen response: ${JSON.stringify(response.data)}`,
+              );
+            }
+            return response.data;
+          }),
+        ),
+    );
+  }
+
   async sendGqlRequest(query: string): Promise<any> {
     const headers: Record<string, any> =
       this.configService.getOrThrow('GQL_HEADERS');

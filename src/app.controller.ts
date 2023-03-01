@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Logger, Post, Query } from '@nestjs/common';
 import { AppService } from './app.service';
 import { PrismaService } from './prisma.service';
-import { QueueStatus } from './enum/QueueStatus.enum';
+import { RequestStatus } from './enum/RequestStatus.enum';
 
 @Controller()
 export class AppController {
@@ -23,10 +23,10 @@ export class AppController {
     @Body() body: Record<string, any>,
   ) {
     const request = await this.prismaService.requestQueue.create({
-      data: { form_id: formId, data: body, status: QueueStatus.QUEUED },
+      data: { form_id: formId, data: body, status: RequestStatus.QUEUED },
     });
     this.appService.pushRequestToQueue(request);
-    this.logger.debug(`Request added: ${request}`);
-    return 'OK';
+    this.logger.debug(`Request added: ${JSON.stringify(request)}`);
+    return 'Request queued!';
   }
 }

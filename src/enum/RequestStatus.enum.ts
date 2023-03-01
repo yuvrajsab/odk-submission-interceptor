@@ -1,4 +1,4 @@
-export enum QueueStatus {
+export enum RequestStatus {
   QUEUED = 'QUEUED',
   FAILED = 'FAILED',
   PROCESSING = 'PROCESSING',
