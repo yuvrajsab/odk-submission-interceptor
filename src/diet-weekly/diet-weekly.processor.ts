@@ -27,9 +27,9 @@ export class DietWeeklyProcessor {
       const submissionData = <DietWeeklySubmission>(<unknown>request.data);
       for (const submission of submissionData.data) {
         const pdfMapping =
-          this.dietWeeklyService.createMappingForPDF(submission);
+          this.dietWeeklyService.createMappingForPdf(submission);
 
-        const pdfResponse = await this.appService.sendPDFRequest(
+        const pdfResponse = await this.appService.sendPdfRequest(
           this.configService.getOrThrow('DIET_WEEKLY_TEMPLATE_ID'),
           pdfMapping,
         );
@@ -40,13 +40,31 @@ export class DietWeeklyProcessor {
         this.logger.debug(
           `PDF generated for diet weekly form for uuid: ${submission.instanceID} => ${pdfUrl}`,
         );
-        this.dietWeeklyService.storePDFUrl(
+
+        const storePdfResponse = await this.dietWeeklyService.storePdfUrl(
           pdfUrl,
           submission,
           submissionData.formId,
         );
+        if ('errors' in storePdfResponse) {
+          throw new Error(
+            `Hasura Service: ${JSON.stringify(storePdfResponse)}`,
+          );
+        }
+        this.logger.debug(
+          `PDF link successfully dumped for diet weekly form for uuid: ${submission.instanceID}`,
+        );
 
-        this.dietWeeklyService.dumpSubmission(submission);
+        const dumpSubmissionResponse =
+          await this.dietWeeklyService.dumpSubmission(submission);
+        if ('errors' in dumpSubmissionResponse) {
+          throw new Error(
+            `Hasura Service: ${JSON.stringify(dumpSubmissionResponse)}`,
+          );
+        }
+        this.logger.debug(
+          `Submission successfully dumped for diet weekly form for uuid: ${submission.instanceID}`,
+        );
       }
 
       await this.appService.updateRequestStatus(request.id, 'DONE');

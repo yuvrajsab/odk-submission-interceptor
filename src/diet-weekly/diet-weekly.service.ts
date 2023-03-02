@@ -116,7 +116,7 @@ export class DietWeeklyService {
     return new Date(date).toLocaleString('default', { month: 'long' });
   }
 
-  createMappingForPDF(data: DietWeeklySubmissionData) {
+  createMappingForPdf(data: DietWeeklySubmissionData) {
     return {
       username: validateData(data.user_name),
       month: this.extractMonthFromDate(data.month),
@@ -157,15 +157,15 @@ export class DietWeeklyService {
     };
   }
 
-  async storePDFUrl(
+  async storePdfUrl(
     pdfUrl: string,
     submission: DietWeeklySubmissionData,
     formId: string,
   ) {
     const gqlQuery = `mutation {
       insert_diet_weekly_reports_one(object: {
-        creation_date: "${submission.month}", 
-        mentor_username: "${submission.user_name}", 
+        creation_date: "${submission.month}",
+        mentor_username: "${submission.user_name}",
         odk_form_id: "${formId}", 
         pdf_url: "${pdfUrl}", 
         submission_date: "${submission['*meta-submission-date*']}", 
@@ -176,11 +176,11 @@ export class DietWeeklyService {
       }
     }`;
 
-    await this.appService.sendGqlRequest(gqlQuery);
+    return this.appService.sendGqlRequest(gqlQuery);
   }
 
-  dumpSubmission(submission: DietWeeklySubmissionData): Promise<any> {
-    const mapping = this.createMappingForPDF(submission);
+  dumpSubmission(submission: DietWeeklySubmissionData) {
+    const mapping = this.createMappingForPdf(submission);
     const gqlQuery = `mutation {
       insert_diet_weekly_data_one(object: {
         instance_id: "${submission.instanceID}", 
@@ -207,7 +207,7 @@ export class DietWeeklyService {
         total_completed_projects: "${mapping.tp_completed_projects}", 
         total_planned_projects: "${mapping.tp_planned_projects}", 
         total_started_projects: "${mapping.tp_started_projects}", 
-        username: "${mapping.username}", 
+        username: "${mapping.username}",
         week: "${mapping.week}", 
         wingname: "${mapping.wingname}", 
         year: "${mapping.year}"

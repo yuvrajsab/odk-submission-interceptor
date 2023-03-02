@@ -36,7 +36,10 @@ export class AppService {
     });
   }
 
-  async sendPDFRequest(templateId: string, payload: Record<string, string>) {
+  async sendPdfRequest(
+    templateId: string,
+    payload: Record<string, string>,
+  ): Promise<Record<string, any>> {
     return await lastValueFrom(
       this.httpService
         .post(
@@ -66,8 +69,8 @@ export class AppService {
     );
   }
 
-  async sendGqlRequest(query: string): Promise<any> {
-    const headers: Record<string, any> =
+  async sendGqlRequest(query: string): Promise<Record<string, any>> {
+    const headers: Record<string, string> =
       this.configService.getOrThrow('GQL_HEADERS');
     this.logger.debug(`Sending GQL request for query: ${query}...`);
     return await lastValueFrom(
@@ -78,7 +81,7 @@ export class AppService {
           { headers: JSON.parse(headers.toString()) },
         )
         .pipe(
-          map((response: any) => {
+          map((response: Record<string, any>) => {
             this.logger.debug(`GQL response:`, response.data);
             return response.data;
           }),
