@@ -156,4 +156,66 @@ export class DietWeeklyService {
       ),
     };
   }
+
+  async storePDFUrl(
+    pdfUrl: string,
+    submission: DietWeeklySubmissionData,
+    formId: string,
+  ) {
+    const gqlQuery = `mutation {
+      insert_diet_weekly_reports_one(object: {
+        creation_date: "${submission.month}", 
+        mentor_username: "${submission.user_name}", 
+        odk_form_id: "${formId}", 
+        pdf_url: "${pdfUrl}", 
+        submission_date: "${submission['*meta-submission-date*']}", 
+        week: "${this.getFromWeekMap(submission.week)}", 
+        wing: "${this.getWingNameShortForm(submission.wingname)}"
+      }) {
+        pdf_url
+      }
+    }`;
+
+    await this.appService.sendGqlRequest(gqlQuery);
+  }
+
+  dumpSubmission(submission: DietWeeklySubmissionData): Promise<any> {
+    const mapping = this.createMappingForPDF(submission);
+    const gqlQuery = `mutation {
+      insert_diet_weekly_data_one(object: {
+        instance_id: "${submission.instanceID}", 
+        month: "${mapping.month}", 
+        oa_authority: "${mapping.oa_authority}", 
+        oa_description: "${mapping.oa_description}", 
+        oa_misc_undertaken: "${mapping.oa_misc_undertaken}", 
+        oa_pictures: "", 
+        oa_supportingwing_v103: "${mapping.oa_supportingwing_v103}", 
+        oa_typeofprojects_v103: "${mapping.oa_typeofprojects_v103}", 
+        oa_wingsupport_v103: "${mapping.oa_wingsupport_v103}", 
+        scert_description: "${mapping.scert_description}", 
+        scert_pictures: "", 
+        scert_supportingwing_v102: "${mapping.scert_supportingwing_v102}", 
+        scert_typeofprojects_v102: "${mapping.scert_typeofprojects_v102}", 
+        scert_undertaken: "${mapping.scert_scert_undertaken}", 
+        scert_wingsupport_v102: "${mapping.scert_wingsupport_v102}", 
+        suomotu_description: "${mapping.suo_description}", 
+        suomotu_pictures: "", 
+        suomotu_supportingwing_v101: "${mapping.suo_supportingwing_v101}", 
+        suomotu_typeofprojects_v101: "${mapping.suo_typeofprojects_v101}", 
+        suomotu_undertaken: "${mapping.suo_suomotu_undertaken}", 
+        suomotu_wingsupport_v101: "${mapping.suo_wingsupport_v101}", 
+        total_completed_projects: "${mapping.tp_completed_projects}", 
+        total_planned_projects: "${mapping.tp_planned_projects}", 
+        total_started_projects: "${mapping.tp_started_projects}", 
+        username: "${mapping.username}", 
+        week: "${mapping.week}", 
+        wingname: "${mapping.wingname}", 
+        year: "${mapping.year}"
+      }) {
+        instance_id
+      }
+    }`;
+
+    return this.appService.sendGqlRequest(gqlQuery);
+  }
 }

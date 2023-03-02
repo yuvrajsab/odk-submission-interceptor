@@ -40,6 +40,13 @@ export class DietWeeklyProcessor {
         this.logger.debug(
           `PDF generated for diet weekly form for uuid: ${submission.instanceID} => ${pdfUrl}`,
         );
+        this.dietWeeklyService.storePDFUrl(
+          pdfUrl,
+          submission,
+          submissionData.formId,
+        );
+
+        this.dietWeeklyService.dumpSubmission(submission);
       }
 
       await this.appService.updateRequestStatus(request.id, 'DONE');
