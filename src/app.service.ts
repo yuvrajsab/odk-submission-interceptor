@@ -5,6 +5,7 @@ import { ConfigService } from '@nestjs/config';
 import { RequestQueue } from '@prisma/client';
 import { Queue } from 'bull';
 import { catchError, lastValueFrom, map } from 'rxjs';
+import { ODKFormSubmissionAttachment } from './interface/odk-submission-attachment.interface';
 import { PrismaService } from './prisma.service';
 
 @Injectable()
@@ -91,6 +92,16 @@ export class AppService {
           }),
         ),
     );
+  }
+
+  getODKAttachmentDownloaderUrl(fileObj: ODKFormSubmissionAttachment) {
+    return `${this.configService.getOrThrow(
+      'ODK_ATTACHMENT_DOWNLOADER_URL',
+    )}?type=${fileObj.type}&filename=${fileObj.filename}&url=${
+      fileObj.url
+    }&configId=${this.configService.getOrThrow(
+      'ODK_ATTACHMENT_DOWNLOADER_CONFIG_ID',
+    )}`;
   }
 
   async pushRequestToQueue(request: RequestQueue) {
