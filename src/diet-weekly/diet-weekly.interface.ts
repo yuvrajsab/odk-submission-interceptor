@@ -10,7 +10,6 @@ export interface DietWeeklySubmissionData extends ODKFormSubmissionData {
   authority: string;
   user_name: string | null;
   form_intro: string | null;
-  instanceID: string | null;
   description: string;
   misc_undertaken: number;
   planned_projects: number;

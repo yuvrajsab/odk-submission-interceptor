@@ -17,6 +17,7 @@ export class AppService {
     private readonly configService: ConfigService,
     private readonly httpService: HttpService,
     @InjectQueue('dietWeekly') private readonly dietWeeklyQueue: Queue,
+    @InjectQueue('dietMonthly') private readonly dietMonthlyQueue: Queue,
   ) {}
 
   async updateRequestStatus(
@@ -111,6 +112,13 @@ export class AppService {
         return 'Successfully Submitted dietWeekly Form!!';
       } catch (e: unknown) {
         return `Request failed for dietWeekly Form: ${(<Error>e).message}`;
+      }
+    } else if (request.form_id === 'monthlyform_v1') {
+      try {
+        await this.dietMonthlyQueue.add('dietMonthlySubmission', request);
+        return 'Successfully Submitted dietMonthly Form!!';
+      } catch (e: unknown) {
+        return `Request failed for dietMonthly Form: ${(<Error>e).message}`;
       }
     }
   }

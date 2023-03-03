@@ -6,6 +6,7 @@ import { PrismaService } from './prisma.service';
 import { DietWeeklyModule } from './diet-weekly/diet-weekly.module';
 import { BullModule } from '@nestjs/bull';
 import { HttpModule } from '@nestjs/axios';
+import { DietMonthlyModule } from './diet-monthly/diet-monthly.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { HttpModule } from '@nestjs/axios';
       inject: [ConfigService],
     }),
     DietWeeklyModule,
+    DietMonthlyModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],

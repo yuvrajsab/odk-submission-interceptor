@@ -1,6 +1,7 @@
 import { HttpModule } from '@nestjs/axios';
 import { BullModule } from '@nestjs/bull';
 import { Module } from '@nestjs/common';
+import { ODKSubmissionHelper } from 'src/helper/odk-submission.helper';
 import { PrismaService } from 'src/prisma.service';
 import { AppService } from '../app.service';
 import { DietWeeklyProcessor } from './diet-weekly.processor';
@@ -17,7 +18,8 @@ const dietWeeklyQueue = BullModule.registerQueue({
     AppService,
     PrismaService,
     DietWeeklyService,
+    ODKSubmissionHelper,
   ],
-  exports: [dietWeeklyQueue],
+  exports: [dietWeeklyQueue, DietWeeklyService],
 })
 export class DietWeeklyModule {}

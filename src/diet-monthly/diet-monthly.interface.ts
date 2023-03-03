@@ -1,0 +1,72 @@
+import { ODKFormSubmission } from '../interface/odk-submission.interface';
+import { ODKFormSubmissionAttachment } from '../interface/odk-submission-attachment.interface';
+import { ODKFormSubmissionData } from '../interface/odk-submission-data.interface';
+
+export interface DietMonthlySubmissionData extends ODKFormSubmissionData {
+  user_name: string;
+  month: string;
+  name: string;
+  designation: string;
+  wingname: string;
+  ifsc_unique_school_visits: number | null;
+  ifsc_mentor_meetings: number | null;
+  ifsc_astermentor_meetings: number | null;
+  ifsc_grievances_recorded: number | null;
+  ifsc_grievances_resolved: number | null;
+  ifsc_tna: number | null;
+  ifsc_trainings_planned: number | null;
+  ifsc_trainings_actual: number | null;
+  ifsc_research_trainings: number | null;
+  ifsc_scertmandated_trainings: number | null;
+  ifsc_tnabased_trainings: number | null;
+  ifsc_leadership_trainings: number | null;
+  ifsc_induction_trainings: number | null;
+  ifsc_refresher_trainings: number | null;
+  ifsc_direct_interventions: number | null;
+  ifsc_teacher_attendance50: number | null;
+  ifsc_teacher_attendance100: number | null;
+  ifsc_upload_report: ODKFormSubmissionAttachment | null;
+  pm_trainings_planned: number | null;
+  pm_trainings_actual: number | null;
+  pm_leadershiptrainings_planned: number | null;
+  pm_leadershiptrainings_actual: number | null;
+  pm_upload_report: ODKFormSubmissionAttachment | null;
+  et_tlm: number | null;
+  et_trainings_planned: number | null;
+  et_trainings_actual: number | null;
+  et_trainings_digcontent: number | null;
+  et_trainings_samiksha: number | null;
+  et_trainings_tablets: number | null;
+  et_trainings_prashnavali: number | null;
+  et_trainings_cybersafety: number | null;
+  et_grievancesrecorded: number | null;
+  et_grievancesresolved: number | null;
+  et_website_updates: number | null;
+  et_socialmedia_updates: number | null;
+  et_upload_report: ODKFormSubmissionAttachment | null;
+  pste_schools_sip: number | null;
+  pste_mentoringsessions: number | null;
+  pste_monitoringvisits: number | null;
+  pste_careercounsellingsessions: number | null;
+  pste_careercounsellingsessions_students: number | null;
+  pste_trainings_mentalhealth: number | null;
+  pste_schoolscovered_mentalhealth: number | null;
+  pste_upload_report: ODKFormSubmissionAttachment | null;
+  we_trainings_vocational_planned: number | null;
+  we_trainings_vocational_actual: number | null;
+  we_upload_report: ODKFormSubmissionAttachment | null;
+  cmde_pedagogy_trainings: number | null;
+  cmde_refreshers_contentdev: number | null;
+  cmde_trainings_tablets: number | null;
+  cmde_tlm: number | null;
+  cmde_studentassessmenttools: number | null;
+  cmde_teacherassessmenttools: number | null;
+  cmde_upload_report: ODKFormSubmissionAttachment | null;
+  dru_awarenessprog_planned: number | null;
+  dru_awarenessprog_actual: number | null;
+  dru_upload_report: ODKFormSubmissionAttachment | null;
+}
+
+export interface DietMonthlySubmission extends ODKFormSubmission {
+  data: DietMonthlySubmissionData[];
+}

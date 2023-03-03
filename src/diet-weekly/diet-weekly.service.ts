@@ -1,13 +1,16 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { AppService } from 'src/app.service';
 import { DietWeeklySubmissionData } from './diet-weekly.interface';
-import { validateData } from '../helper/odk-submission.helper';
+import { ODKSubmissionHelper } from '../helper/odk-submission.helper';
 
 @Injectable()
 export class DietWeeklyService {
   private readonly logger = new Logger(DietWeeklyService.name);
 
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    private readonly appService: AppService,
+    private readonly odkSubmissionHelper: ODKSubmissionHelper,
+  ) {}
 
   getWingNameShortForm(wingName: string): string {
     if (wingName === 'pre_service') {
@@ -112,21 +115,25 @@ export class DietWeeklyService {
       .join(', ');
   }
 
-  extractMonthFromDate(date: string): string {
-    return new Date(date).toLocaleString('default', { month: 'long' });
-  }
-
   createMappingForPdf(data: DietWeeklySubmissionData) {
     return {
-      username: validateData(data.user_name),
-      month: this.extractMonthFromDate(data.month),
+      username: this.odkSubmissionHelper.validateData(data.user_name),
+      month: this.odkSubmissionHelper.extractMonthNameFromDate(data.month),
       year: '2023',
       week: this.getFromWeekMap(data.week),
       wingname: this.getFromWingNameMap(data.wingname),
-      tp_planned_projects: validateData(data.planned_projects),
-      tp_started_projects: validateData(data.started_projects),
-      tp_completed_projects: validateData(data.completed_projects),
-      suo_suomotu_undertaken: validateData(data.suomotu_undertaken),
+      tp_planned_projects: this.odkSubmissionHelper.validateData(
+        data.planned_projects,
+      ),
+      tp_started_projects: this.odkSubmissionHelper.validateData(
+        data.started_projects,
+      ),
+      tp_completed_projects: this.odkSubmissionHelper.validateData(
+        data.completed_projects,
+      ),
+      suo_suomotu_undertaken: this.odkSubmissionHelper.validateData(
+        data.suomotu_undertaken,
+      ),
       suo_typeofprojects_v101: this.getFromTypeOfProjectMap(
         data.typeofprojects_v101,
       ),
@@ -135,7 +142,9 @@ export class DietWeeklyService {
       suo_supportingwing_v101: this.getFromSupportWingMap(
         data.supportingwing_v101,
       ),
-      scert_scert_undertaken: validateData(data.scert_undertaken),
+      scert_scert_undertaken: this.odkSubmissionHelper.validateData(
+        data.scert_undertaken,
+      ),
       scert_typeofprojects_v102: this.getFromTypeOfProjectMap(
         data.typeofprojects_v102,
       ),
@@ -144,8 +153,10 @@ export class DietWeeklyService {
       scert_supportingwing_v102: this.getFromSupportWingMap(
         data.supportingwing_v102,
       ),
-      oa_misc_undertaken: validateData(data.misc_undertaken),
-      oa_authority: validateData(data.authority),
+      oa_misc_undertaken: this.odkSubmissionHelper.validateData(
+        data.misc_undertaken,
+      ),
+      oa_authority: this.odkSubmissionHelper.validateData(data.authority),
       oa_typeofprojects_v103: this.getFromTypeOfProjectMap(
         data.typeofprojects_v103,
       ),
