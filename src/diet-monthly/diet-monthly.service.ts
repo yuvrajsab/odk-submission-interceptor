@@ -223,11 +223,10 @@ export class DietMonthlyService {
     submission: DietMonthlySubmissionData,
     formId: string,
   ) {
-    // mentor_username: "${submission.user_name}", 
     const gqlQuery = `mutation {
         insert_diet_monthly_reports_one(object: {
           creation_date: "${submission.month}", 
-          mentor_username: "dummy", 
+          mentor_username: "${submission.user_name}", 
           odk_form_id: "${formId}", 
           pdf_url: "${pdfUrl}", 
           submission_date: "${submission['*meta-submission-date*']}", 
@@ -244,7 +243,6 @@ export class DietMonthlyService {
 
   dumpSubmission(submission: DietMonthlySubmissionData) {
     const mapping = this.createMappingForPdf(submission);
-    // username: "${mapping.username}", 
     const gqlQuery = `mutation {
       insert_diet_monthly_data_one(object: {
         cmde_pedagogy_trainings: "${mapping.cmde_pedagogy_trainings}", 
@@ -329,7 +327,7 @@ export class DietMonthlyService {
         pste_upload_report: "${this.odkSubmissionHelperService.getAttachmentLink(
           submission.pste_upload_report,
         )}", 
-        username: "dummy", 
+        username: "${mapping.username}", 
         we_trainings_vocational_actual: "${
           mapping.we_trainings_vocational_actual
         }", 
