@@ -2,6 +2,7 @@ import { Body, Controller, Get, Logger, Post, Query } from '@nestjs/common';
 import { AppService } from './app.service';
 import { PrismaService } from './prisma.service';
 import { RequestStatus } from './enum/RequestStatus.enum';
+import { QueueService } from './service/queue.service';
 
 @Controller()
 export class AppController {
@@ -10,6 +11,7 @@ export class AppController {
   constructor(
     private readonly appService: AppService,
     private readonly prismaService: PrismaService,
+    private readonly queueService: QueueService,
   ) {}
 
   @Get()
@@ -25,7 +27,7 @@ export class AppController {
     const request = await this.prismaService.requestQueue.create({
       data: { form_id: formId, data: body, status: RequestStatus.QUEUED },
     });
-    this.appService.pushRequestToQueue(request);
+    this.queueService.pushRequestToQueue(request);
     this.logger.debug(`Request added: ${JSON.stringify(request)}`);
     return 'Request queued!';
   }

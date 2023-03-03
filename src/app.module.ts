@@ -7,6 +7,7 @@ import { DietWeeklyModule } from './diet-weekly/diet-weekly.module';
 import { BullModule } from '@nestjs/bull';
 import { HttpModule } from '@nestjs/axios';
 import { DietMonthlyModule } from './diet-monthly/diet-monthly.module';
+import { QueueService } from './service/queue.service';
 
 @Module({
   imports: [
@@ -28,6 +29,6 @@ import { DietMonthlyModule } from './diet-monthly/diet-monthly.module';
     DietMonthlyModule,
   ],
   controllers: [AppController],
-  providers: [AppService, PrismaService],
+  providers: [AppService, PrismaService, QueueService],
 })
 export class AppModule {}

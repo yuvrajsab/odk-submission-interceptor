@@ -3,7 +3,7 @@ import { AppService } from 'src/app.service';
 import { ODKFormSubmissionAttachment } from 'src/interface/odk-submission-attachment.interface';
 
 @Injectable()
-export class ODKSubmissionHelper {
+export class ODKSubmissionHelperService {
   constructor(private readonly appService: AppService) {}
 
   validateData(data: string | number | null): string {

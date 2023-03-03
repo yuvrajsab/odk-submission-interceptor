@@ -30,7 +30,7 @@ export class DietMonthlyProcessor {
           this.dietMonthlyService.createMappingForPdf(submission);
 
         const pdfResponse = await this.appService.sendPdfRequest(
-          this.configService.getOrThrow('DIET_MONTHLY_TEMPLATE_ID'),
+          this.dietMonthlyService.getTemplateId(submission.wingname),
           pdfMapping,
         );
         if ('error' in pdfResponse) {

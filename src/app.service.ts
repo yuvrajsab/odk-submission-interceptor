@@ -1,9 +1,6 @@
 import { HttpService } from '@nestjs/axios';
-import { InjectQueue } from '@nestjs/bull';
 import { HttpException, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { RequestQueue } from '@prisma/client';
-import { Queue } from 'bull';
 import { catchError, lastValueFrom, map } from 'rxjs';
 import { ODKFormSubmissionAttachment } from './interface/odk-submission-attachment.interface';
 import { PrismaService } from './prisma.service';
@@ -16,8 +13,6 @@ export class AppService {
     private readonly prismaService: PrismaService,
     private readonly configService: ConfigService,
     private readonly httpService: HttpService,
-    @InjectQueue('dietWeekly') private readonly dietWeeklyQueue: Queue,
-    @InjectQueue('dietMonthly') private readonly dietMonthlyQueue: Queue,
   ) {}
 
   async updateRequestStatus(
@@ -103,23 +98,5 @@ export class AppService {
     }&configId=${this.configService.getOrThrow(
       'ODK_ATTACHMENT_DOWNLOADER_CONFIG_ID',
     )}`;
-  }
-
-  async pushRequestToQueue(request: RequestQueue) {
-    if (request.form_id === 'dietsweeky_v1') {
-      try {
-        await this.dietWeeklyQueue.add('dietWeeklySubmission', request);
-        return 'Successfully Submitted dietWeekly Form!!';
-      } catch (e: unknown) {
-        return `Request failed for dietWeekly Form: ${(<Error>e).message}`;
-      }
-    } else if (request.form_id === 'monthlyform_v1') {
-      try {
-        await this.dietMonthlyQueue.add('dietMonthlySubmission', request);
-        return 'Successfully Submitted dietMonthly Form!!';
-      } catch (e: unknown) {
-        return `Request failed for dietMonthly Form: ${(<Error>e).message}`;
-      }
-    }
   }
 }
