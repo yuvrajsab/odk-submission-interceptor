@@ -11,7 +11,7 @@ export class QueueService {
   ) {}
 
   async pushRequestToQueue(request: RequestQueue) {
-    if (request.form_id === 'dietsweeky_v1') {
+    if (request.form_id === 'dietsweeky_v2') {
       try {
         await this.dietWeeklyQueue.add('dietWeeklySubmission', request);
         return 'Successfully Submitted dietWeekly Form!!';

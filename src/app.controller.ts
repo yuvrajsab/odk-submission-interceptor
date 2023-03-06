@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Logger, Post, Query } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  Logger,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { AppService } from './app.service';
 import { PrismaService } from './prisma.service';
 import { RequestStatus } from './enum/RequestStatus.enum';
@@ -24,6 +32,10 @@ export class AppController {
     @Query('form_id') formId: string,
     @Body() body: Record<string, any>,
   ) {
+    if (!formId) {
+      throw new BadRequestException('form_id is required');
+    }
+
     const request = await this.prismaService.requestQueue.create({
       data: { form_id: formId, data: body, status: RequestStatus.QUEUED },
     });

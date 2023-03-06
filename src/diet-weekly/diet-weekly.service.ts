@@ -139,7 +139,9 @@ export class DietWeeklyService {
       suo_typeofprojects_v101: this.getFromTypeOfProjectMap(
         data.typeofprojects_v101,
       ),
-      suo_description: '',
+      suo_description: this.odkSubmissionHelperService.validateData(
+        data.suomotu_description,
+      ),
       suo_wingsupport_v101: this.getFromWingSupportMap(data.wingsupport_v101),
       suo_supportingwing_v101: this.getFromSupportWingMap(
         data.supportingwing_v101,
@@ -150,7 +152,9 @@ export class DietWeeklyService {
       scert_typeofprojects_v102: this.getFromTypeOfProjectMap(
         data.typeofprojects_v102,
       ),
-      scert_description: '',
+      scert_description: this.odkSubmissionHelperService.validateData(
+        data.scert_description,
+      ),
       scert_wingsupport_v102: this.getFromWingSupportMap(data.wingsupport_v102),
       scert_supportingwing_v102: this.getFromSupportWingMap(
         data.supportingwing_v102,
@@ -164,7 +168,9 @@ export class DietWeeklyService {
       oa_typeofprojects_v103: this.getFromTypeOfProjectMap(
         data.typeofprojects_v103,
       ),
-      oa_description: '',
+      oa_description: this.odkSubmissionHelperService.validateData(
+        data.projects_assigned_description,
+      ),
       oa_wingsupport_v103: this.getFromWingSupportMap(data.wingsupport_v103),
       oa_supportingwing_v103: this.getFromSupportWingMap(
         data.supportingwing_v103,
@@ -203,18 +209,24 @@ export class DietWeeklyService {
         oa_authority: "${mapping.oa_authority}", 
         oa_description: "${mapping.oa_description}", 
         oa_misc_undertaken: "${mapping.oa_misc_undertaken}", 
-        oa_pictures: "", 
+        oa_pictures: "${this.odkSubmissionHelperService.getAttachmentLink(
+          submission.projects_assigned_pictures,
+        )}", 
         oa_supportingwing_v103: "${mapping.oa_supportingwing_v103}", 
         oa_typeofprojects_v103: "${mapping.oa_typeofprojects_v103}", 
         oa_wingsupport_v103: "${mapping.oa_wingsupport_v103}", 
         scert_description: "${mapping.scert_description}", 
-        scert_pictures: "", 
+        scert_pictures: "${this.odkSubmissionHelperService.getAttachmentLink(
+          submission.scert_pictures,
+        )}", 
         scert_supportingwing_v102: "${mapping.scert_supportingwing_v102}", 
         scert_typeofprojects_v102: "${mapping.scert_typeofprojects_v102}", 
         scert_undertaken: "${mapping.scert_scert_undertaken}", 
         scert_wingsupport_v102: "${mapping.scert_wingsupport_v102}", 
         suomotu_description: "${mapping.suo_description}", 
-        suomotu_pictures: "", 
+        suomotu_pictures: "${this.odkSubmissionHelperService.getAttachmentLink(
+          submission.suomotu_pictures,
+        )}", 
         suomotu_supportingwing_v101: "${mapping.suo_supportingwing_v101}", 
         suomotu_typeofprojects_v101: "${mapping.suo_typeofprojects_v101}", 
         suomotu_undertaken: "${mapping.suo_suomotu_undertaken}", 
