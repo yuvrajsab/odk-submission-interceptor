@@ -11,26 +11,26 @@ export class DietMonthlyService {
 
   constructor(
     private readonly appService: AppService,
-    private readonly configSerice: ConfigService,
+    private readonly configService: ConfigService,
     private readonly dietWeeklyService: DietWeeklyService,
     private readonly odkSubmissionHelperService: ODKSubmissionHelperService,
   ) {}
 
   getTemplateId(wingName: string): string {
     if (wingName === 'pre_service') {
-      return this.configSerice.getOrThrow('DIET_MONTHLY_TEMPLATE_PSTE_ID');
+      return this.configService.getOrThrow('DIET_MONTHLY_TEMPLATE_PSTE_ID');
     } else if (wingName === 'in_service') {
-      return this.configSerice.getOrThrow('DIET_MONTHLY_TEMPLATE_IFIC_ID');
+      return this.configService.getOrThrow('DIET_MONTHLY_TEMPLATE_IFIC_ID');
     } else if (wingName === 'dru') {
-      return this.configSerice.getOrThrow('DIET_MONTHLY_TEMPLATE_DRU_ID');
+      return this.configService.getOrThrow('DIET_MONTHLY_TEMPLATE_DRU_ID');
     } else if (wingName === 'edtech') {
-      return this.configSerice.getOrThrow('DIET_MONTHLY_TEMPLATE_ET_ID');
+      return this.configService.getOrThrow('DIET_MONTHLY_TEMPLATE_ET_ID');
     } else if (wingName === 'curriculum_assessment') {
-      return this.configSerice.getOrThrow('DIET_MONTHLY_TEMPLATE_CMDE_ID');
+      return this.configService.getOrThrow('DIET_MONTHLY_TEMPLATE_CMDE_ID');
     } else if (wingName === 'planning') {
-      return this.configSerice.getOrThrow('DIET_MONTHLY_TEMPLATE_PM_ID');
+      return this.configService.getOrThrow('DIET_MONTHLY_TEMPLATE_PM_ID');
     } else if (wingName === 'work_ex') {
-      return this.configSerice.getOrThrow('DIET_MONTHLY_TEMPLATE_WE_ID');
+      return this.configService.getOrThrow('DIET_MONTHLY_TEMPLATE_WE_ID');
     }
     throw new Error(`No Template Id found for wingname: ${wingName}`);
   }
