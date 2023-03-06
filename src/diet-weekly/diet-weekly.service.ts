@@ -245,4 +245,13 @@ export class DietWeeklyService {
 
     return this.appService.sendGqlRequest(gqlQuery);
   }
+
+  updateSubmissionFlag(instanceId: string) {
+    const tableName = 'DIE6Y_V2_CORE';
+    const query = `UPDATE "${tableName}" 
+      SET "weekly_report_pdf_status" = 'pdf generated'
+      WHERE "_URI" = '${instanceId}'`;
+
+    return this.appService.executeQuery(query);
+  }
 }

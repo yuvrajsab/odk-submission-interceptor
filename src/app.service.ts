@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { catchError, lastValueFrom, map } from 'rxjs';
 import { ODKFormSubmissionAttachment } from './interface/odk-submission-attachment.interface';
 import { PrismaService } from './prisma.service';
+import * as pg from 'pg';
 
 @Injectable()
 export class AppService {
@@ -88,6 +89,24 @@ export class AppService {
           }),
         ),
     );
+  }
+
+  async executeQuery(query: string) {
+    const pool = new pg.Pool({
+      connectionString: this.configService.getOrThrow('ODK_DB_CONN_STRING'),
+    });
+
+    let res;
+    try {
+      res = await pool.query(query);
+    } catch (err) {
+      res = null;
+      this.logger.error(`ODK Postgres error: ${err}`);
+    } finally {
+      await pool.end();
+    }
+
+    return res;
   }
 
   getODKAttachmentDownloaderUrl(fileObj: ODKFormSubmissionAttachment) {

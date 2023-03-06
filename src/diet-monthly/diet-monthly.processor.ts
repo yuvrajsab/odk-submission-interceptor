@@ -65,6 +65,16 @@ export class DietMonthlyProcessor {
         this.logger.debug(
           `Submission successfully dumped for diet monthly form for uuid: ${submission.instanceID}`,
         );
+
+        const result = await this.dietMonthlyService.updateSubmissionFlag(
+          submission.instanceID,
+        );
+        if (!result) {
+          throw new Error('ODK Postgres db error occurred');
+        }
+        this.logger.debug(
+          `Submission flag successfully update for diet monthly form for uuid: ${submission.instanceID}`,
+        );
       }
 
       await this.appService.updateRequestStatus(request.id, 'DONE');
