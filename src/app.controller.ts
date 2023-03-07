@@ -4,8 +4,8 @@ import {
   Controller,
   Get,
   Logger,
+  Param,
   Post,
-  Query,
 } from '@nestjs/common';
 import { AppService } from './app.service';
 import { PrismaService } from './prisma.service';
@@ -27,13 +27,13 @@ export class AppController {
     return 'ODK Submission Interceptor';
   }
 
-  @Post('/process')
+  @Post('/process/:formId')
   async process(
-    @Query('form_id') formId: string,
+    @Param('formId') formId: string,
     @Body() body: Record<string, any>,
   ) {
     if (!formId) {
-      throw new BadRequestException('form_id is required');
+      throw new BadRequestException('formId is required');
     }
 
     const request = await this.prismaService.requestQueue.create({
