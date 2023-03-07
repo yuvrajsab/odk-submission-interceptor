@@ -39,3 +39,5 @@ lerna-debug.log*
 pgdata
 /redis-data
 /redis.conf
+/redis-data-local
+/redis-local.conf
