@@ -18,7 +18,7 @@ export class QueueService {
       } catch (e: unknown) {
         return `Request failed for dietWeekly Form: ${(<Error>e).message}`;
       }
-    } else if (request.form_id === 'monthlyform_v1') {
+    } else if (['monthlyform_v1', 'monthlyform_v2'].includes(request.form_id)) {
       try {
         await this.dietMonthlyQueue.add('dietMonthlySubmission', request);
         return 'Successfully Submitted dietMonthly Form!!';
