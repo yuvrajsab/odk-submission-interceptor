@@ -347,8 +347,7 @@ export class DietMonthlyService {
     return this.appService.sendGqlRequest(gqlQuery);
   }
 
-  updateSubmissionFlag(instanceId: string) {
-    const tableName = 'MNTHLFORMV1_CORE';
+  updateSubmissionFlag(instanceId: string, tableName: string) {
     const query = `UPDATE "${tableName}" 
       SET "monthly_report_pdf_status" = 'pdf generated'
       WHERE "_URI" = '${instanceId}'`;

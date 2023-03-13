@@ -10,6 +10,10 @@ import { DietMonthlySubmission } from './diet-monthly.interface';
 @Processor('dietMonthly')
 export class DietMonthlyProcessor {
   private readonly logger = new Logger(DietMonthlyProcessor.name);
+  private readonly odkFormIdSubmissionTableMap: Record<string, string> = {
+    monthlyform_v1: 'MNTHLFORMV1_CORE',
+    monthlyform_v2: 'MNTHLFORMV2_CORE',
+  };
 
   constructor(
     private configService: ConfigService,
@@ -66,8 +70,11 @@ export class DietMonthlyProcessor {
           `Submission successfully dumped for diet monthly form for uuid: ${submission.instanceID}`,
         );
 
+        const tableName =
+          this.odkFormIdSubmissionTableMap[submissionData.formId];
         const result = await this.dietMonthlyService.updateSubmissionFlag(
           submission.instanceID,
+          tableName,
         );
         if (!result) {
           throw new Error('ODK Postgres db error occurred');

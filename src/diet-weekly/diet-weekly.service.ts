@@ -246,8 +246,7 @@ export class DietWeeklyService {
     return this.appService.sendGqlRequest(gqlQuery);
   }
 
-  updateSubmissionFlag(instanceId: string) {
-    const tableName = 'DIE6Y_V2_CORE';
+  updateSubmissionFlag(instanceId: string, tableName: string) {
     const query = `UPDATE "${tableName}" 
       SET "weekly_report_pdf_status" = 'pdf generated'
       WHERE "_URI" = '${instanceId}'`;

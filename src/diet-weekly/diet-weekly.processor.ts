@@ -10,6 +10,10 @@ import { DietWeeklySubmission } from './diet-weekly.interface';
 @Processor('dietWeekly')
 export class DietWeeklyProcessor {
   private readonly logger = new Logger(DietWeeklyProcessor.name);
+  private readonly odkFormIdSubmissionTableMap: Record<string, string> = {
+    dietsweeky_v1: 'DITSWEKY_V1_CORE',
+    dietsweeky_v2: 'DIE6Y_V2_CORE',
+  };
 
   constructor(
     private configService: ConfigService,
@@ -66,8 +70,11 @@ export class DietWeeklyProcessor {
           `Submission successfully dumped for diet weekly form for uuid: ${submission.instanceID}`,
         );
 
+        const tableName =
+          this.odkFormIdSubmissionTableMap[submissionData.formId];
         const result = await this.dietWeeklyService.updateSubmissionFlag(
           submission.instanceID,
+          tableName,
         );
         if (!result) {
           throw new Error('ODK Postgres db error occurred');
